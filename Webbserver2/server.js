@@ -1,20 +1,18 @@
 const { createServer } = require("http");
 const { createReadStream } = require("fs");
 
-const sendFile = (response, status, type, filePath) =>{
-    response.writeHead(status, {"Content-type": type });
+const sendFile = (response, status, type, filePath) => {
+    response.writeHead(status, { "Content-Type": type });
     createReadStream(filePath).pipe(response);
 };
 
-createServer((request, result) => {
+createServer((request, response) => {
     switch (request.url) {
-        case "/":
-            return sendFile(result, 200, "");
-        case "/img_2.jpg":
-            return sendFile(result, 200, "");
-        default:
-
-}
+      case "/":
+        return sendFile(response, 200, "text/html", ".index.html");
+    case "bild.jpg":
+        return sendFile(response, 200, "image/png", "./bild.png");
+  }
 }).listen(3000);
 
-console.log("ashur' personal website running on port 3000");
+console.log("Ashur, port 3000");
