@@ -20,7 +20,7 @@ createServer((request, response) => {
   }
 
     switch (request.url) {
-      case "/":
+      case "./contact":
         return sendFile(response, 200, "text/html", "./index.html");
     case "/bild.png":
         return sendFile(response, 200, "image/png", "./bild.png");
