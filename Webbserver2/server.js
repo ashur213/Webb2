@@ -1,6 +1,13 @@
 const { createServer } = require("http");
 const { createReadStream } = require("fs");
 const { decode } = require("querystring");
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  database: "node"
+});
 
 const sendFile = (response, status, type, filePath) => {
     response.writeHead(status, { "Content-Type": type });
@@ -16,6 +23,16 @@ createServer((request, response) => {
     request.on("end", () => {
       const {name, email, message } = decode(body);
       console.log(`${name} (${email}): ${message}`);
+      con.connect(function(err) {
+        if (err) throw err;
+        console.log("Connected!");
+        var sql = `INSERT INTO form (name, email, message) VALUES ('${name}', '${email}', '${message}')`;
+      
+        con.query(sql, function (err, result) {
+          if (err) throw err;
+          console.log("1 record inserted");
+        });
+      });
     });
   }
 
